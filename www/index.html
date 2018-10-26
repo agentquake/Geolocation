@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>Blank App</title>
+</head>
+
+<body>
+    <div id="location"></div>
+    <div id="map" style="height: 600px; width: 100%"></div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_i3GK-jUucJLRk7StLCRdLAZhOdRV81g"></script>
+    <script>
+
+
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        function onDeviceReady() {
+            navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
+        }
+
+        var onSuccess = function (position) {
+            document.getElementById("location").innerHTML = 'Latitude: ' + position.coords.latitude + '<br />' +
+                'Longitude: ' + position.coords.longitude + '<br />';
+            Latitude = position.coords.latitude;
+            Longitude = position.coords.longitude;
+
+            getMap(Latitude, Longitude);
+            // alert('Latitude: ' + position.coords.latitude + '\n' +
+            //     'Longitude: ' + position.coords.longitude + '\n' +
+            //     'Altitude: ' + position.coords.altitude + '\n' +
+            //     'Accuracy: ' + position.coords.accuracy + '\n' +
+            //     'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
+            //     'Heading: ' + position.coords.heading + '\n' +
+            //     'Speed: ' + position.coords.speed + '\n' +
+            //     'Timestamp: ' + position.timestamp + '\n');
+        };
+
+        function getMap(latitude, longitude) {
+
+            var mapOptions = {
+                center: new google.maps.LatLng(0, 0),
+                zoom: 1,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            map = new google.maps.Map
+                (document.getElementById("map"), mapOptions);
+
+
+            var latLong = new google.maps.LatLng(latitude, longitude);
+
+            var marker = new google.maps.Marker({
+                position: latLong
+            });
+
+            marker.setMap(map);
+            map.setZoom(15);
+            map.setCenter(marker.getPosition());
+        }
+
+
+        // onError Callback receives a PositionError object
+        //
+        function onError(error) {
+            alert('code: ' + error.code + '\n' +
+                'message: ' + error.message + '\n');
+        }
+
+    </script>
+</body>
+
+</html>
